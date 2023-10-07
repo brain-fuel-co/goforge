@@ -1,7 +1,11 @@
+/*
+Copyright © 2023 Ecclesia Foundation
+
+*/
 package main
 
-import "fmt"
+import "goforge/cmd/goforge/cmd"
 
 func main() {
-	fmt.Println("Hello, World!")
+	cmd.Execute()
 }
