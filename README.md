@@ -1,5 +1,13 @@
 # GoForge
 
+## Inspired by
+
+- Mix: a build tool for Elixir that creates, compiles, tests, manages dependencies, and much more.
+- Polylith: a framework for architecting composable projects in a variety of languages
+- Leiningen: a project automation framework for Clojure
+- Cobra: a Go framework for making CLI apps
+- Maven and Gradle: frameworks for making Java apps
+
 ## Why use GoForge?
 
 - Straightforward way to make composable code in Go.
@@ -7,11 +15,16 @@
 - Straightforward commands to make and extend a project.
 - Straightforward commands to make and version artifacts.
 - Plays nicely with Git & GitHub.
+- Plays nicely with Cobra
 
 ## How to use GoForge?
 
 ```bash
 goforge new project <git user account>/<project name>
+# OR
+goforge new project <website>/<project name>
+# OR
+goforge new project <website>/<path/to/project name>
 ```
 
 ```bash
@@ -24,6 +37,8 @@ goforge new base <base name>
 
 ```bash
 goforge new app <app name>
+# OR
+goforge new app --cobra <app name>
 ```
 
 ## Commands
@@ -63,6 +78,10 @@ With each new entity, it should be added to Git.
 ### Build
 #### App
 #### All Apps
+
+### Clean
+#### All
+#### App
 
 ### Test
 #### Component
