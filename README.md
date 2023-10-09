@@ -16,6 +16,7 @@
 - Straightforward commands to make and version artifacts.
 - Plays nicely with Git & GitHub.
 - Plays nicely with Cobra
+- Plays nicely with Viper
 
 ## How to use GoForge?
 
