@@ -36,6 +36,7 @@ to quickly create a Cobra application.`,
 		} else {
 			fmt.Println(strings.TrimSpace(string(installScoopOut)))
 		}
+
 		installMake := exec.Command("powershell", "-Command", installMakeCmd)
 		installMakeOut, installMakeErr := installMake.CombinedOutput()
 		if installMakeErr != nil {
@@ -44,6 +45,7 @@ to quickly create a Cobra application.`,
 		} else {
 			fmt.Println(strings.TrimSpace(string(installMakeOut)))
 		}
+
 		installGit := exec.Command("powershell", "-Command", installGitCmd)
 		installGitOut, installGitErr := installGit.CombinedOutput()
 		if installGitErr != nil {
@@ -52,6 +54,7 @@ to quickly create a Cobra application.`,
 		} else {
 			fmt.Println(strings.TrimSpace(string(installGitOut)))
 		}
+
 		installCobra := exec.Command("powershell", "-Command", installCobraCmd)
 		installCobraOut, installCobraErr := installCobra.CombinedOutput()
 		if installCobraErr != nil {
