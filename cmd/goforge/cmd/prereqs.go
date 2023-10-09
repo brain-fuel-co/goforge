@@ -14,13 +14,13 @@ import (
 // prereqsCmd represents the prereqs command
 var prereqsCmd = &cobra.Command{
 	Use:   "prereqs",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Installs prerequisites for using GoForge (Windows Only)",
+	Long: `Installs prerequisites for using GoForge (Windows Only):
+  - Scoop
+  - Make
+  - Git
+  - Cobra
+Requires that you have Go v1.18.0 or later installed.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		installScoopCmd := "iex (new-object net.webclient).downloadstring('https://get.scoop.sh')"
 		installMakeCmd := "scoop install make"
