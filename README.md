@@ -1,7 +1,5 @@
 ![](./resources/images/logo-long.svg)
 
-# GoForge
-
 ## Brand and Trademark Usage Guidelines
 
 ### Trademark Guidelines
