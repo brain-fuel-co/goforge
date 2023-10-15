@@ -31,13 +31,17 @@ Around the same time, Go and Clojure entered the scene. Whereas the exact date t
 
 The Idea for GoForge came about as I was pondering the Polylith architecture, Go's `internal` package structure, and general patterns I'd seen whilst perusing thousands of Git repositories containing Go code.
 
+I wanted a command-line tool to integrate into the developer workflow, that would allow developers the leeway to explore and learn more about the problem before committing to structure, and then help them easily structure their solutions to "play nice" with the other pieces of the puzzle. For example, let's say that part of my workflow involves making a particular set of API calls to `foo.com/api/v1/bar/baz`, then once I get the API code working, I can turn it into a little lego-block-like component that I can combine with another component for fetching the API key and turn that into a "base". I can then call this "base" in the actual app that I'm running, and the little bit of code I made can be used by anyone else that needs to make these API calls, thus cutting down on code repetition (DRY-principle). Then, anyone who wishes to make a change to the component for their own purposes can do so freely, as long as they don't generate breaking changes. 
+
+So, now that you have a glimpse of the idea, let's take a look into how this can help the Developer Experience and the Development Workflow.
+
 ** Development Workflow
 
 *** Project Visualization
 
-*** Managing Dependencies
-
 *** Creating Apps
+
+*** Managing External Dependencies
 
 *** Creating Components and Bases
 
@@ -45,7 +49,9 @@ The Idea for GoForge came about as I was pondering the Polylith architecture, Go
 
 *** Running Tests
 
-*** Managing Configuration
+*** Generating Documentation
+
+*** Releasing & Managing Configuration
 
 *** Etc.
 
