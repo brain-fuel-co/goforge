@@ -17,7 +17,7 @@ This is totally understandable: Depending upon the needs of a project and the pr
 
 From the perspective of the compiler, you technically ought to be able to write one gigantic `main` function and cram all your code into it. Since human beings have to ultimately read the code, this is a very bad idea. Indeed, if we take seriously the words of Hal Abelson, we will concede that there must be a better idea.
 
-*** A Better Idea
+*** A Better Idea: Make
 
 #+BEGIN_QUOTE
 "Programs must be written for people to read, and only incidentally for machines to execute." (Hal Abelson)
@@ -25,7 +25,11 @@ From the perspective of the compiler, you technically ought to be able to write 
 
 Ever since complex systems were first developed, folks have had to make systems to tame the complexity. One of the longest lasting contributions to managing complex systems was released in 1977 by Stuart Feldman at Bell Labs. It was called Make. In 1988, it was officially released as a part of the GNU project. Writing a Makefile and using the `make` commands simplified the software development lifecycle by showing how separate pieces of code ought to be combined, giving names to intermediate targets, and exposing a single interface for all the developers' build needs.
 
+*** Evolution: Ant, Maven, Gradle...
+
 You are likely familiar with such tools as Apache Ant, Maven, and Gradle. These tools appeared on the scene later and abstracted away different layers of what would have been written in a Makefile. They have shaped the expectations many developers havein terms of project organization. The idea of having a `lib` directory for libraries or dependencies that are not available via a package manager, and a `src/<main/test>/resources` directory for non-code resources like configuration files are baked into the Maven/Gradle ecosystem. 
+
+*** Clojure and Go: Polylith and GoForge
 
 Around the same time, Go and Clojure entered the scene. Whereas the exact date that Johannes Staffans invented the Polylith command-line tool is not widely documented (I couldn't find it), it entered the Clojure ecosystem in the late 2010s and does a lovely job of helping developers write modular code by splitting the constituent elements into `components` and `bases`, and thinking about them as lego blocks. Since Go has eschewed inheritance in favor of composition, and since Go has given us the lovely option of making certain packages `internal`, it lends itself very nicely to the lego-like Polylith architecture. Follow this link to learn more about [[https://polylith.gitbook.io/polylith/][Polylith]]
 
