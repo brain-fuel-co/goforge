@@ -20,7 +20,7 @@ These guidelines exist to ensure that the GoForge command line tool can continue
 
 *** License
 
-The GoForge command line tool is licensed under the [Eclipse Public License - v 2.0](https://www.eclipse.org/legal/epl-2.0/). Any use, reproduction or distribution of the program constitutes recipient's acceptance of said license.
+The GoForge command line tool is licensed under the [[Eclipse Public License - v 2.0][https://www.eclipse.org/legal/epl-2.0/]]. Any use, reproduction or distribution of the program constitutes recipient's acceptance of said license.
 
 *** Nominative Fair Use
 
@@ -32,7 +32,7 @@ Use of the name "GoForge" does not imply official status or endorsement by the G
 
 *** Logo
 
-The Go Gopher was originally created by Renee French and is licensed under the [Creative Commons 4.0 Attribution License](https://creativecommons.org/licenses/by/4.0/). Consequently, the GoForge logo is also licensed under the [Creative Commons 4.0 Attribution License](https://creativecommons.org/licenses/by/4.0/), which allows you to use, share, and adapt the logo as long as you provide appropriate attribution. However, please note that the GoForge name and slogan are proprietary and owned by goforge.dev. Any use of the GoForge name and slogan must be in accordance with their terms and policies.
+The Go Gopher was originally created by Renee French and is licensed under the [[Creative Commons 4.0 Attribution License][https://creativecommons.org/licenses/by/4.0/]]. Consequently, the GoForge logo is also licensed under the [Creative Commons 4.0 Attribution License](https://creativecommons.org/licenses/by/4.0/), which allows you to use, share, and adapt the logo as long as you provide appropriate attribution. However, please note that the GoForge name and slogan are proprietary and owned by goforge.dev. Any use of the GoForge name and slogan must be in accordance with their terms and policies.
 
 ** Inspired by
 
