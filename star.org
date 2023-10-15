@@ -20,7 +20,7 @@ From the perspective of the compiler, you technically ought to be able to write 
 *** A Better Idea
 
 #+BEGIN_QUOTE
-"Programs must be written for people to read, and only incidentally for machines to execute."
+"Programs must be written for people to read, and only incidentally for machines to execute." (Hal Abelson)
 #+END_QUOTE
 
 Ever since complex systems were first developed, folks have had to make systems to tame the complexity. One of the longest lasting contributions to managing complex systems was released in 1977 by Stuart Feldman at Bell Labs. It was called Make. In 1988, it was officially released as a part of the GNU project. Writing a Makefile and using the `make` commands simplified the software development lifecycle by showing how separate pieces of code ought to be combined, giving names to intermediate targets, and exposing a single interface for all the developers' build needs.
