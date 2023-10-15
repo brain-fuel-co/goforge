@@ -1,6 +1,20 @@
 * GoForge
 
-** Use
+** Brand and Trademark Usage Guidelines
+
+*** Trademark Guidelines
+
+Any use of the GoForge Trademarks other than those permitted in these guidelines must be approved in advance.
+
+In general, we want the word mark “GoForge” and the GoForge Slogan, "Crafting Code, Building Success" when associated therewith, to be used freely to refer to the GoForge programming language and its purpose.
+
+We do not want the word mark "GoForge" to be used:
+
+- to refer to any other command line tool.
+- in a way that is misleading or may imply association of unrelated projects, companies, software, documentation, or other resources with the GoForge project.
+- in ways that confuse the community as to whether the GoForge command line tool is open source and free to use.
+
+These guidelines exist to ensure that the GoForge command line tool can continue to share its releases under open source licenses while making sure that the GoForge Trademarks are protected as meaningful source identifiers in a way that’s consistent with trademark law.
 
 *** License
 
@@ -8,11 +22,11 @@ The GoForge command line tool is licensed under the [Eclipse Public License - v 
 
 *** Nominative Fair Use
 
-Goforge is neither affiliated with, nor endorsed by the Go programming language community or Google.
+GoForge is neither affiliated with, nor endorsed by the Go programming language community or Google.
 
 *** No Implication of Official Status
 
-Use of the name "Goforge" does not imply official status or endorsement by the Go programming language product.
+Use of the name "GoForge" does not imply official status or endorsement by the Go programming language product.
 
 *** Logo
 
@@ -24,7 +38,8 @@ The Go Gopher was originally created by Renee French and is licensed under the [
 - Polylith: a framework for architecting composable projects in a variety of languages
 - Leiningen: a project automation framework for Clojure
 - Cobra: a Go framework for making CLI apps
-- Maven and Gradle: frameworks for making Java apps
+- Viper: a Go library for configuration management
+- Maven and Gradle: build automation and project management tools for Java
 
 ** Why use GoForge?
 
@@ -33,8 +48,8 @@ The Go Gopher was originally created by Renee French and is licensed under the [
 - Straightforward commands to make and extend a project.
 - Straightforward commands to make and version artifacts.
 - Plays nicely with Git & GitHub.
-- Plays nicely with Cobra
-- Plays nicely with Viper
+- Plays nicely with Cobra.
+- Plays nicely with Viper.
 
 ** How to use GoForge?
 
