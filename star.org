@@ -1,0 +1,19 @@
+* Symbol
+[[resources/images/logo-long.svg]]
+* Slogan
+Crafting Code, Building Success
+* Story
+** Starting as a Go developer
+** Trying to figure out the best way to structure a project
+*** Polylith 
+** Trying to figure out the best way to create components, compile code, run tests, manage dependencies, etc.
+*** Mix
+** Trying to figure out how to manage configuration
+*** Viper
+** Comparing to tried and true solutions for code/project management tools
+*** Maven/Gradle
+** Trying to figure out something powerful
+*** Leiningen/Boot/Clojure
+* Surprise
+* Salient
+
