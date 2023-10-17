@@ -6,7 +6,7 @@
 
 Any use of the GoForge Trademarks other than those permitted in these guidelines must be approved in advance.
 
-In general, we want the word mark “GoForge” and the GoForge Slogan, "Crafting Code, Building Success" when associated therewith, to be used freely to refer to the GoForge programming language and its purpose.
+In general, we want the word mark "GoForge" and the GoForge Slogan, "Crafting Code, Building Success" when associated therewith, to be used freely to refer to the GoForge programming language and its purpose.
 
 We do not want the word mark "GoForge" to be used:
 
@@ -14,7 +14,7 @@ We do not want the word mark "GoForge" to be used:
 - in a way that is misleading or may imply association of unrelated projects, companies, software, documentation, or other resources with the GoForge project.
 - in ways that confuse the community as to whether the GoForge command line tool is open source and free to use.
 
-These guidelines exist to ensure that the GoForge command line tool can continue to share its releases under open source licenses while making sure that the GoForge Trademarks are protected as meaningful source identifiers in a way that’s consistent with trademark law.
+These guidelines exist to ensure that the GoForge command line tool can continue to share its releases under open source licenses while making sure that the GoForge Trademarks are protected as meaningful source identifiers in a way that's consistent with trademark law.
 
 *** License
 
@@ -53,27 +53,26 @@ The Go Gopher was originally created by Renee French and is licensed under the [
 
 ** How to use GoForge?
 
-```bash
-goforge new project <git user account>/<project name>
-* OR
-goforge new project <website>/<project name>
-* OR
-goforge new project <website>/<path/to/project name>
-```
+#+BEGIN_SRC bash
+	goforge new project <git user account>/<project name>
+	goforge new project <website>/<project name>
+	goforge new project <website>/<path/to/project name>
+#+END_SRC
 
-```bash
-goforge new component <component name>
-```
+#+BEGIN_SRC bash
+	goforge new project <git user account>/<project name>
+	goforge new project <website>/<project name>
+	goforge new project <website>/<path/to/project name>
+#+END_SRC
 
-```bash
-goforge new base <base name>
-```
+#+BEGIN_SRC bash
+	goforge new base <base name>
+#+END_SRC
 
-```bash
-goforge new app <app name>
-* OR
-goforge new app --cobra <app name>
-```
+#+BEGIN_SRC bash
+	goforge new app <app name>
+	goforge new app --cobra <app name>
+#+END_SRC
 
 ** Commands
 
