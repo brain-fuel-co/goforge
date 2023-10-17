@@ -54,15 +54,15 @@ The Go Gopher was originally created by Renee French and is licensed under the [
 ** How to use GoForge?
 
 #+BEGIN_SRC bash
-goforge new project <git user account>/<project name>
-goforge new project <website>/<project name>
-goforge new project <website>/<path/to/project name>
+goforge new project www.brain-fuel.co/goforge
 #+END_SRC
 
 #+BEGIN_SRC bash
-goforge new project <git user account>/<project name>
-goforge new project <website>/<project name>
-goforge new project <website>/<path/to/project name>
+goforge new project github.com/brain-fuel/goforge
+#+END_SRC
+
+#+BEGIN_SRC bash
+goforge new project www.brain-fuel.co/path/to/coolapp
 #+END_SRC
 
 #+BEGIN_SRC bash
