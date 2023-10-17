@@ -54,24 +54,24 @@ The Go Gopher was originally created by Renee French and is licensed under the [
 ** How to use GoForge?
 
 #+BEGIN_SRC bash
-	goforge new project <git user account>/<project name>
-	goforge new project <website>/<project name>
-	goforge new project <website>/<path/to/project name>
+goforge new project <git user account>/<project name>
+goforge new project <website>/<project name>
+goforge new project <website>/<path/to/project name>
 #+END_SRC
 
 #+BEGIN_SRC bash
-	goforge new project <git user account>/<project name>
-	goforge new project <website>/<project name>
-	goforge new project <website>/<path/to/project name>
+goforge new project <git user account>/<project name>
+goforge new project <website>/<project name>
+goforge new project <website>/<path/to/project name>
 #+END_SRC
 
 #+BEGIN_SRC bash
-	goforge new base <base name>
+goforge new base <base name>
 #+END_SRC
 
 #+BEGIN_SRC bash
-	goforge new app <app name>
-	goforge new app --cobra <app name>
+goforge new app <app name>
+goforge new app --cobra <app name>
 #+END_SRC
 
 ** Commands
