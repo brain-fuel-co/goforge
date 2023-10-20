@@ -2,13 +2,13 @@ package component
 
 import (
 	"fmt"
-	"goforge/pkg/components/newcomponent"
+	"goforge/pkg/components/newutils"
 )
 
 func New(name string) {
-	if newComponentErr := newcomponent.ShouldNotCreateComponent(name); newComponentErr != nil {
+	if newComponentErr := newutils.ShouldNotCreateElement(name, newutils.Component); newComponentErr != nil {
 		fmt.Println(newComponentErr)
 	} else {
-		newcomponent.CreateNewComponent(name)
+		newutils.CreateNewElement(name, newutils.Component)
 	}
 }
