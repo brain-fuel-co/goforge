@@ -1,11 +1,19 @@
 /*
-Copyright © 2023 Ecclesia Foundation
-
+Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 */
 package main
 
-import "goforge/cmd/goforge/cmd"
+import (
+	"fmt"
+	"goforge/cmd/goforge/cmd"
+	"goforge/pkg/components/inrootdir"
+)
 
 func main() {
-	cmd.Execute()
+	if inrootdir.InRootDir() {
+		cmd.Execute()
+	} else {
+		fmt.Println("  You must be in the root directory of a project")
+		fmt.Println("  with a go.mod file in order to run goforge.")
+	}
 }
