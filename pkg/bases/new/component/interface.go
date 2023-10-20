@@ -1,7 +1,14 @@
 package component
 
-import "goforge/pkg/components/newcomponent"
+import (
+	"fmt"
+	"goforge/pkg/components/newcomponent"
+)
 
 func New(name string) {
-	newcomponent.CreateNewComponent(name)
+	if newComponentErr := newcomponent.ShouldNotCreateComponent(name); newComponentErr != nil {
+		fmt.Println(newComponentErr)
+	} else {
+		newcomponent.CreateNewComponent(name)
+	}
 }
