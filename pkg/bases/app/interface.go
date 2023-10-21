@@ -12,3 +12,9 @@ func New(name string) {
 		utils.CreateNewElement(name, utils.App, utils.EPL2)
 	}
 }
+
+func Remove(name string) {
+	if removeAppErr := utils.RemoveElement(name, utils.App); removeAppErr != nil {
+		fmt.Println(removeAppErr)
+	}
+}

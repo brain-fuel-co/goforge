@@ -8,8 +8,8 @@ import (
 	"goforge/pkg/bases/app"
 )
 
-// appCmd represents the app command
-var appCmd = &cobra.Command{
+// addAppCmd represents the addApp command
+var addAppCmd = &cobra.Command{
 	Use:   "app",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -20,19 +20,39 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		howManyArgs := len(args)
-		if cmd.Parent().Name() == "new" {
-			if howManyArgs != 1 {
-				cmd.Parent().Usage()
-			} else {
-				name := args[0]
-				app.New(name)
-			}
+		if howManyArgs != 1 {
+			cmd.Parent().Usage()
+		} else {
+			name := args[0]
+			app.New(name)
+		}
+	},
+}
+
+// rmAppCmd represents the rmApp command
+var rmAppCmd = &cobra.Command{
+	Use:   "app",
+	Short: "A brief description of your command",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		howManyArgs := len(args)
+		if howManyArgs != 1 {
+			cmd.Parent().Usage()
+		} else {
+			name := args[0]
+			app.Remove(name)
 		}
 	},
 }
 
 func init() {
-	newCmd.AddCommand(appCmd)
+	newCmd.AddCommand(addAppCmd)
+	rmCmd.AddCommand(rmAppCmd)
 
 	// Here you will define your flags and configuration settings.
 

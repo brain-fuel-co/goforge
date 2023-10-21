@@ -146,12 +146,12 @@ For v1:
   goforge rm component <component name>
 #+END_SRC
 
-@todo
+@v0
 #+BEGIN_SRC bash
   goforge rm base <base name>
 #+END_SRC
 
-@todo
+@v0
 #+BEGIN_SRC bash
   goforge rm app <app name>
 #+END_SRC
