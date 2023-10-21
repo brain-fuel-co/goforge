@@ -11,13 +11,8 @@ import (
 // addBaseCmd represents the base command
 var addBaseCmd = &cobra.Command{
 	Use:   "base",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Add a base to the project.",
+	Long:  `Add a base to the project.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		howManyArgs := len(args)
 		if howManyArgs != 1 {
@@ -32,13 +27,8 @@ to quickly create a Cobra application.`,
 // rmBaseCmd represents the base command
 var rmBaseCmd = &cobra.Command{
 	Use:   "base",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Remove a base from the project.",
+	Long:  "Remove a base from the project.",
 	Run: func(cmd *cobra.Command, args []string) {
 		howManyArgs := len(args)
 		if howManyArgs != 1 {

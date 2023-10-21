@@ -11,13 +11,8 @@ import (
 // addAppCmd represents the addApp command
 var addAppCmd = &cobra.Command{
 	Use:   "app",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Add an app to the project.",
+	Long:  `Add an app to the project.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		howManyArgs := len(args)
 		if howManyArgs != 1 {
@@ -32,13 +27,8 @@ to quickly create a Cobra application.`,
 // rmAppCmd represents the rmApp command
 var rmAppCmd = &cobra.Command{
 	Use:   "app",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Remove an app from the project.",
+	Long:  "Remove an app from the project.",
 	Run: func(cmd *cobra.Command, args []string) {
 		howManyArgs := len(args)
 		if howManyArgs != 1 {
