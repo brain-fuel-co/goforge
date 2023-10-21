@@ -55,16 +55,44 @@ The Go Gopher was originally created by Renee French and is licensed under the [
 
 *** To initialize a new project
 
+For v1:
+- License options
+
+@todo
 #+BEGIN_SRC bash
 goforge init www.brain-fuel.co/goforge
 #+END_SRC
 
+@todo
 #+BEGIN_SRC bash
 goforge init github.com/brain-fuel/goforge
 #+END_SRC
 
+@todo
 #+BEGIN_SRC bash
 goforge init www.brain-fuel.co/path/to/coolapp
+#+END_SRC
+
+*** To list entities
+
+@todo
+#+BEGIN_SRC bash
+  goforge list # lists all entities: apps, bases, and components
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge list apps
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge list bases
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge list components
 #+END_SRC
 
 *** To create a new entity
@@ -108,6 +136,11 @@ For v1:
 
 *** To remove an entity
 
+For v1:
+- stop from tracking in Git
+- safe remove (default)
+- force remove (--force flag)
+
 @todo
 #+BEGIN_SRC bash
   goforge rm component <component name>
@@ -141,6 +174,43 @@ For v1:
   goforge rm container <container name> --type <container type>
 #+END_SRC
 
+*** To test an entity
+
+@todo
+#+BEGIN_SRC bash
+  goforge test # runs all tests
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge test components
+  goforge test component <component name>
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge test bases
+  goforge test base <base name>
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge test apps
+  goforge test app <app name>
+#+END_SRC
+
+@todo
+Figure out a way to test containers
+
+*** To build an app
+
+@todo
+#+BEGIN_SRC bash
+  goforge build # builds all apps w/default config
+  goforge build <app name> # builds app with default config
+  goforge build <app name> --with-config <config name> # builds app with named config
+#+END_SRC
+
 ** Other/old
 
 *** Show
@@ -165,18 +235,6 @@ For v1:
 ***** For a particular component
 ***** For a particular base
 ***** For a particular app
-
-*** New
-
-With each new entity, it should be added to Git.
-
-**** Component
-**** Base
-**** App
-
-*** Build
-**** App
-**** All Apps
 
 *** Clean
 **** All
