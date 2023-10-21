@@ -127,6 +127,7 @@ For v1:
 #+BEGIN_SRC bash
   goforge rm impl <impl name> --component <component name>
   goforge rm impl <impl name> --base <base name>
+#+END_SRC
 
 @todo
 #+BEGIN_SRC bash
