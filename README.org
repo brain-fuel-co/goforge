@@ -118,8 +118,8 @@ For v1:
 
 @todo
 #+BEGIN_SRC bash
-  goforge new impl <impl name> --component <component name>
-  goforge new impl <impl name> --base <base name>
+  goforge new internal <internal file name> --component <component name>
+  goforge new internal <internal file name> --base <base name>
 #+END_SRC
 
 @todo
@@ -158,8 +158,8 @@ For v1:
 
 @todo
 #+BEGIN_SRC bash
-  goforge rm impl <impl name> --component <component name>
-  goforge rm impl <impl name> --base <base name>
+  goforge rm internal <internal file name> --component <component name>
+  goforge rm internal <internal file name> --base <base name>
 #+END_SRC
 
 @todo
