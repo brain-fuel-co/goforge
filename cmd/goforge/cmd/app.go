@@ -10,13 +10,13 @@ import (
 
 // addAppCmd represents the addApp command
 var addAppCmd = &cobra.Command{
-	Use:   "app",
+	Use:   "app [name]",
 	Short: "Add an app to the project.",
 	Long:  `Add an app to the project.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		howManyArgs := len(args)
 		if howManyArgs != 1 {
-			cmd.Parent().Usage()
+			cmd.Usage()
 		} else {
 			name := args[0]
 			app.New(name)
@@ -26,13 +26,13 @@ var addAppCmd = &cobra.Command{
 
 // rmAppCmd represents the rmApp command
 var rmAppCmd = &cobra.Command{
-	Use:   "app",
+	Use:   "app [name]",
 	Short: "Remove an app from the project.",
 	Long:  "Remove an app from the project.",
 	Run: func(cmd *cobra.Command, args []string) {
 		howManyArgs := len(args)
 		if howManyArgs != 1 {
-			cmd.Parent().Usage()
+			cmd.Usage()
 		} else {
 			name := args[0]
 			app.Remove(name)

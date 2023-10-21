@@ -10,13 +10,13 @@ import (
 
 // addBaseCmd represents the base command
 var addBaseCmd = &cobra.Command{
-	Use:   "base",
+	Use:   "base [name]",
 	Short: "Add a base to the project.",
 	Long:  `Add a base to the project.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		howManyArgs := len(args)
 		if howManyArgs != 1 {
-			cmd.Parent().Usage()
+			cmd.Usage()
 		} else {
 			name := args[0]
 			base.New(name)
@@ -26,13 +26,13 @@ var addBaseCmd = &cobra.Command{
 
 // rmBaseCmd represents the base command
 var rmBaseCmd = &cobra.Command{
-	Use:   "base",
+	Use:   "base [name]",
 	Short: "Remove a base from the project.",
 	Long:  "Remove a base from the project.",
 	Run: func(cmd *cobra.Command, args []string) {
 		howManyArgs := len(args)
 		if howManyArgs != 1 {
-			cmd.Parent().Usage()
+			cmd.Usage()
 		} else {
 			name := args[0]
 			base.Remove(name)

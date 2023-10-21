@@ -7,13 +7,13 @@ import (
 
 // newComponentCmd represents the component command with new as the parent
 var newComponentCmd = &cobra.Command{
-	Use:   "component",
+	Use:   "component [name]",
 	Short: "Add a component to the project.",
 	Long:  `Add a component to the project.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		howManyArgs := len(args)
 		if howManyArgs != 1 {
-			cmd.Parent().Usage()
+			cmd.Usage()
 		} else {
 			name := args[0]
 			component.New(name)
@@ -23,13 +23,13 @@ var newComponentCmd = &cobra.Command{
 
 // rmComponentCmd represents the component command with rm as the parent
 var rmComponentCmd = &cobra.Command{
-	Use:   "component",
+	Use:   "component [name]",
 	Short: "Remove a component from the project.",
 	Long:  "Remove a component from the project.",
 	Run: func(cmd *cobra.Command, args []string) {
 		howManyArgs := len(args)
 		if howManyArgs != 1 {
-			cmd.Parent().Usage()
+			cmd.Usage()
 		} else {
 			name := args[0]
 			component.Remove(name)
