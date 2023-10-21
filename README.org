@@ -141,7 +141,7 @@ For v1:
 - safe remove (default)
 - force remove (--force flag)
 
-@todo
+@v0
 #+BEGIN_SRC bash
   goforge rm component <component name>
 #+END_SRC
