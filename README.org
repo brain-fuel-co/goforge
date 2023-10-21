@@ -53,28 +53,103 @@ The Go Gopher was originally created by Renee French and is licensed under the [
 
 ** How to use GoForge?
 
+*** To initialize a new project
+
 #+BEGIN_SRC bash
-goforge new project www.brain-fuel.co/goforge
+goforge init www.brain-fuel.co/goforge
 #+END_SRC
 
 #+BEGIN_SRC bash
-goforge new project github.com/brain-fuel/goforge
+goforge init github.com/brain-fuel/goforge
 #+END_SRC
 
 #+BEGIN_SRC bash
-goforge new project www.brain-fuel.co/path/to/coolapp
+goforge init www.brain-fuel.co/path/to/coolapp
 #+END_SRC
 
+*** To create a new entity
+
+For v1:
+- Each new component should automatically be added to Git
+
+@v0
 #+BEGIN_SRC bash
-goforge new base <base name>
+  goforge new component <component name>
 #+END_SRC
 
+@v0
 #+BEGIN_SRC bash
-goforge new app <app name>
-goforge new app --cobra <app name>
+  goforge new base <base name>
 #+END_SRC
 
-** Commands
+@v0
+#+BEGIN_SRC bash
+  goforge new app <app name>
+# goforge new app --cobra <app name>
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge new impl <impl name> --component <component name>
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge new impl <impl name> --base <base name>
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge new config <config name>
+  goforge new config <config name> --app <app name>
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge new container <container name> --type <container type>
+  goforge new container <container name> --template <container template>
+#+END_SRC
+
+*** To remove an entity
+
+@todo
+#+BEGIN_SRC bash
+  goforge rm component <component name>
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge rm base <base name>
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge rm app <app name>
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge rm impl <impl name> --component <component name>
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge rm impl <impl name> --base <base name>
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge rm config <config name>
+  goforge rm config <config name> --app <app name>
+#+END_SRC
+
+@todo
+#+BEGIN_SRC bash
+  goforge rm container <container name>
+  goforge rm container <container name> --type <container type>
+#+END_SRC
+
+** Other/old
 
 *** Show
 
@@ -103,7 +178,6 @@ goforge new app --cobra <app name>
 
 With each new entity, it should be added to Git.
 
-**** Project
 **** Component
 **** Base
 **** App
@@ -142,3 +216,4 @@ Build, Test, Tag
 ** TODO
 
 - Make GoForge compatible with GitHub Actions
+- Standardize Container Template Form
