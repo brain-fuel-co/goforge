@@ -1,4 +1,4 @@
-package newutils
+package utils
 
 import (
 	"fmt"
@@ -62,23 +62,41 @@ func CreateCleanElementPath(name string, elementType ElementType) (string, error
 	}
 }
 
-func CreateNewElement(name string, elementType ElementType) error {
+func CreateNewElement(name string, elementType ElementType, copyrightType CopyrightType) error {
 	cleanElementPath, cleanElementPathErr := CreateCleanElementPath(name, elementType)
 	if cleanElementPathErr != nil {
 		return cleanElementPathErr
 	} else {
 		switch elementType {
 		case Component:
-			createComponentOrBaseFolderAndInterfaceFiles(cleanElementPath, EPL2)
-			createComponentOrBaseInternalFolderAndCoreFiles(cleanElementPath, EPL2)
+			return createComponentOrBase(name, Component, EPL2)
 		case Base:
-			createComponentOrBaseFolderAndInterfaceFiles(cleanElementPath, EPL2)
-			createComponentOrBaseInternalFolderAndCoreFiles(cleanElementPath, EPL2)
+			return createComponentOrBase(name, Base, EPL2)
 		case App:
-			createAppFolderAndMainFile(cleanElementPath, EPL2)
+			return createAppFolderAndMainFile(cleanElementPath, EPL2)
+		default:
+			return fmt.Errorf("can only create element of type Component, Base, or App")
 		}
 	}
-	return fmt.Errorf("implement me")
+}
+
+func createComponentOrBase(name string, elementType ElementType, copyrightType CopyrightType) error {
+	cleanElementPath, cleanElementPathError := CreateCleanElementPath(name, elementType)
+	if cleanElementPathError != nil {
+		return fmt.Errorf("error")
+	} else {
+		elemErr := createComponentOrBaseFolderAndInterfaceFiles(cleanElementPath, EPL2)
+		if elemErr != nil {
+			return elemErr
+		} else {
+			elemInternalErr := createComponentOrBaseInternalFolderAndCoreFiles(cleanElementPath, EPL2)
+			if elemInternalErr != nil {
+				return elemInternalErr
+			} else {
+				return nil
+			}
+		}
+	}
 }
 
 func createComponentOrBaseFolderAndInterfaceFiles(cleanElementPath string, copyrightType CopyrightType) error {
@@ -135,7 +153,7 @@ func createAppFolderAndMainFile(cleanElementPath string, copyrightType Copyright
 		mainFile, mainFileErr := os.Create(mainFilePath)
 		defer mainFile.Close()
 		if mainFileErr != nil {
-			return fmt.Errorf("error creating interface files in %s", cleanElementPath)
+			return fmt.Errorf("error creating main file in %s", cleanElementPath)
 		} else {
 			copyrightComment := copyrightComment(copyrightType)
 			packageLine := "package main"
@@ -147,4 +165,13 @@ func createAppFolderAndMainFile(cleanElementPath string, copyrightType Copyright
 
 func copyrightComment(copyrightType CopyrightType) string {
 	return ""
+}
+
+func RemoveElement(name string, elementType ElementType) error {
+	cleanElementPath, cleanElementPathErr := CreateCleanElementPath(name, elementType)
+	if cleanElementPathErr != nil {
+		return cleanElementPathErr
+	} else {
+		return os.RemoveAll(cleanElementPath)
+	}
 }

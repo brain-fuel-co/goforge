@@ -2,11 +2,11 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"goforge/pkg/bases/new/component"
+	"goforge/pkg/bases/component"
 )
 
-// componentCmd represents the component command
-var componentCmd = &cobra.Command{
+// newComponentCmd represents the component command with new as the parent
+var newComponentCmd = &cobra.Command{
 	Use:   "component",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -17,19 +17,39 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		howManyArgs := len(args)
-		if cmd.Parent().Name() == "new" {
-			if howManyArgs != 1 {
-				cmd.Parent().Usage()
-			} else {
-				name := args[0]
-				component.New(name)
-			}
+		if howManyArgs != 1 {
+			cmd.Parent().Usage()
+		} else {
+			name := args[0]
+			component.New(name)
+		}
+	},
+}
+
+// rmComponentCmd represents the component command with rm as the parent
+var rmComponentCmd = &cobra.Command{
+	Use:   "component",
+	Short: "A brief description of your command",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		howManyArgs := len(args)
+		if howManyArgs != 1 {
+			cmd.Parent().Usage()
+		} else {
+			name := args[0]
+			component.Remove(name)
 		}
 	},
 }
 
 func init() {
-	newCmd.AddCommand(componentCmd)
+	newCmd.AddCommand(newComponentCmd)
+	rmCmd.AddCommand(rmComponentCmd)
 
 	// Here you will define your flags and configuration settings.
 
