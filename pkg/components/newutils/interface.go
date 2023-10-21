@@ -69,19 +69,19 @@ func CreateNewElement(name string, elementType ElementType) error {
 	} else {
 		switch elementType {
 		case Component:
-			createElementFolderAndContents(cleanElementPath, EPL2)
-			createElementInternalFolderAndContents(cleanElementPath, EPL2)
+			createComponentOrBaseFolderAndInterfaceFiles(cleanElementPath, EPL2)
+			createComponentOrBaseInternalFolderAndCoreFiles(cleanElementPath, EPL2)
 		case Base:
-			createElementFolderAndContents(cleanElementPath, EPL2)
-			createElementInternalFolderAndContents(cleanElementPath, EPL2)
+			createComponentOrBaseFolderAndInterfaceFiles(cleanElementPath, EPL2)
+			createComponentOrBaseInternalFolderAndCoreFiles(cleanElementPath, EPL2)
 		case App:
-			createElementFolderAndContents(cleanElementPath, EPL2)
+			createAppFolderAndMainFile(cleanElementPath, EPL2)
 		}
 	}
 	return fmt.Errorf("implement me")
 }
 
-func createElementFolderAndContents(cleanElementPath string, copyrightType CopyrightType) error {
+func createComponentOrBaseFolderAndInterfaceFiles(cleanElementPath string, copyrightType CopyrightType) error {
 	if directoryErr := os.MkdirAll(cleanElementPath, 0755); directoryErr != nil {
 		return directoryErr
 	} else {
@@ -103,7 +103,7 @@ func createElementFolderAndContents(cleanElementPath string, copyrightType Copyr
 	}
 }
 
-func createElementInternalFolderAndContents(cleanElementPath string, copyrightType CopyrightType) error {
+func createComponentOrBaseInternalFolderAndCoreFiles(cleanElementPath string, copyrightType CopyrightType) error {
 	cleanElementInternalPath := filepath.Join(cleanElementPath, "internal")
 	if directoryErr := os.MkdirAll(cleanElementInternalPath, 0755); directoryErr != nil {
 		return directoryErr
@@ -118,12 +118,30 @@ func createElementInternalFolderAndContents(cleanElementPath string, copyrightTy
 			internalCoreTestFileErr != nil {
 			return fmt.Errorf("error creating core files in %s", cleanElementInternalPath)
 		} else {
-			copyrightComment := ""
+			copyrightComment := copyrightComment(copyrightType)
 			internalPackageLine := "package internal\n"
 			internalCoreFile.WriteString(copyrightComment + internalPackageLine)
 			internalCoreTestFile.WriteString(copyrightComment + internalPackageLine)
 			return nil
 		}
+	}
+}
+
+func createAppFolderAndMainFile(cleanElementPath string, copyrightType CopyrightType) error {
+	if directoryErr := os.MkdirAll(cleanElementPath, 0755); directoryErr != nil {
+		return directoryErr
+	} else {
+		mainFilePath := filepath.Join(cleanElementPath, "main.go")
+		mainFile, mainFileErr := os.Create(mainFilePath)
+		defer mainFile.Close()
+		if mainFileErr != nil {
+			return fmt.Errorf("error creating interface files in %s", cleanElementPath)
+		} else {
+			copyrightComment := copyrightComment(copyrightType)
+			packageLine := "package main"
+			mainFile.WriteString(copyrightComment + packageLine)
+		}
+		return nil
 	}
 }
 
