@@ -37,9 +37,10 @@ The Go Gopher was originally created by Renee French and is licensed under the [
 - Mix: a build tool for Elixir that creates, compiles, tests, manages dependencies, and much more.
 - Polylith: a framework for architecting composable projects in a variety of languages
 - Leiningen: a project automation framework for Clojure
-- Cobra: a Go framework for making CLI apps
+- Cobra: a Go library and command line tool for making CLI apps
 - Viper: a Go library for configuration management
-- Maven and Gradle: build automation and project management tools for Java
+- Bazel & Gazelle: An incremental build tool, and a generator for build files for Go projects.
+- Maven & Gradle: build automation and project management tools for Java
 
 ** Why use GoForge?
 

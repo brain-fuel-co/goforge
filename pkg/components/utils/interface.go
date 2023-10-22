@@ -5,16 +5,27 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 )
 
 type ElementType int
+type FileType int
 type CopyrightType int
 
 const (
 	Component ElementType = iota
 	Base
 	App
+)
+
+const (
 	EPL2 CopyrightType = iota
+)
+
+const (
+	DoesNotExist FileType = iota
+	Directory
+	File
 )
 
 func IsSafeName(input string) bool {
@@ -23,15 +34,37 @@ func IsSafeName(input string) bool {
 	return matched
 }
 
-func ShouldNotCreateElement(entity string, elementType ElementType) error {
-	if !IsSafeName(entity) {
-		return fmt.Errorf("element name %s contains characters other than lowercase letters, numbers, or underscores", entity)
+func ElementExists(name string, elementType ElementType) bool {
+	cleanElementPath, cleanElementPathErr := CreateCleanElementPath(name, elementType)
+	if cleanElementPathErr != nil {
+		return false
 	} else {
-		cleanEntityPath, cleanEntityPathErr := CreateCleanElementPath(entity, elementType)
-		if cleanEntityPathErr != nil {
-			return cleanEntityPathErr
+		info, infoErr := os.Stat(cleanElementPath)
+		if infoErr != nil {
+			if os.IsNotExist(infoErr) {
+				return false
+			} else {
+				if !info.IsDir() {
+					return false
+				} else {
+					return true
+				}
+			}
 		} else {
-			info, infoErr := os.Stat(cleanEntityPath)
+			return true
+		}
+	}
+}
+
+func ShouldNotCreateElement(name string, elementType ElementType) error {
+	if !IsSafeName(name) {
+		return fmt.Errorf("element name %s contains characters other than lowercase letters, numbers, or underscores", name)
+	} else {
+		cleanElementPath, cleanElementPathErr := CreateCleanElementPath(name, elementType)
+		if cleanElementPathErr != nil {
+			return cleanElementPathErr
+		} else {
+			info, infoErr := os.Stat(cleanElementPath)
 			if infoErr != nil {
 				if os.IsNotExist(infoErr) {
 					return nil
@@ -40,9 +73,9 @@ func ShouldNotCreateElement(entity string, elementType ElementType) error {
 				}
 			} else {
 				if info.IsDir() {
-					return fmt.Errorf("%s is a directory", cleanEntityPath)
+					return fmt.Errorf("%s is a directory", cleanElementPath)
 				} else {
-					return fmt.Errorf("%s is a file", cleanEntityPath)
+					return fmt.Errorf("%s is a file", cleanElementPath)
 				}
 			}
 		}
@@ -69,11 +102,11 @@ func CreateNewElement(name string, elementType ElementType, copyrightType Copyri
 	} else {
 		switch elementType {
 		case Component:
-			return createComponentOrBase(name, Component, EPL2)
+			return createComponentOrBase(name, Component, copyrightType)
 		case Base:
-			return createComponentOrBase(name, Base, EPL2)
+			return createComponentOrBase(name, Base, copyrightType)
 		case App:
-			return createAppFolderAndMainFile(cleanElementPath, EPL2)
+			return createAppFolderAndMainFile(cleanElementPath, copyrightType)
 		default:
 			return fmt.Errorf("can only create element of type Component, Base, or App")
 		}
@@ -85,11 +118,11 @@ func createComponentOrBase(name string, elementType ElementType, copyrightType C
 	if cleanElementPathError != nil {
 		return fmt.Errorf("error")
 	} else {
-		elemErr := createComponentOrBaseFolderAndInterfaceFiles(cleanElementPath, EPL2)
+		elemErr := createComponentOrBaseFolderAndInterfaceFiles(cleanElementPath, copyrightType)
 		if elemErr != nil {
 			return elemErr
 		} else {
-			elemInternalErr := createComponentOrBaseInternalFolderAndCoreFiles(cleanElementPath, EPL2)
+			elemInternalErr := createComponentOrBaseInternalFolderAndCoreFiles(cleanElementPath, copyrightType)
 			if elemInternalErr != nil {
 				return elemInternalErr
 			} else {
@@ -116,8 +149,8 @@ func createComponentOrBaseFolderAndInterfaceFiles(cleanElementPath string, copyr
 			packageLine := fmt.Sprintf("package %s\n", filepath.Base(cleanElementPath))
 			interfaceFile.WriteString(copyrightComment + packageLine)
 			interfaceTestFile.WriteString(copyrightComment + packageLine)
+			return nil
 		}
-		return nil
 	}
 }
 
@@ -158,8 +191,8 @@ func createAppFolderAndMainFile(cleanElementPath string, copyrightType Copyright
 			copyrightComment := copyrightComment(copyrightType)
 			packageLine := "package main"
 			mainFile.WriteString(copyrightComment + packageLine)
+			return nil
 		}
-		return nil
 	}
 }
 
@@ -173,5 +206,37 @@ func RemoveElement(name string, elementType ElementType) error {
 		return cleanElementPathErr
 	} else {
 		return os.RemoveAll(cleanElementPath)
+	}
+}
+
+func CreateInternalFile(fileName string, elementName string, elementType ElementType, copyrightType CopyrightType) error {
+	if !IsSafeName(fileName) {
+		return fmt.Errorf("name %s contains characters other than lowercase letters, numbers, or underscores", fileName)
+	} else {
+		cleanElementPath, cleanElementPathErr := CreateCleanElementPath(elementName, elementType)
+		if cleanElementPathErr != nil {
+			return cleanElementPathErr
+		} else {
+			if !strings.HasSuffix(fileName, ".go") {
+				fileName = fileName + ".go"
+			}
+			internalFolderPath := filepath.Join(cleanElementPath, "internal")
+			mkInternalDirErr := os.MkdirAll(internalFolderPath, 0755)
+			if mkInternalDirErr != nil {
+				return mkInternalDirErr
+			} else {
+				newInternalFilePath := filepath.Join(internalFolderPath, fileName)
+				newInternalFile, newInternalFileErr := os.Create(newInternalFilePath)
+				defer newInternalFile.Close()
+				if newInternalFileErr != nil {
+					return fmt.Errorf("error creating %s file in %s", fileName, internalFolderPath)
+				} else {
+					copyrightComment := copyrightComment(copyrightType)
+					packageLine := "package internal"
+					newInternalFile.WriteString(copyrightComment + packageLine)
+					return nil
+				}
+			}
+		}
 	}
 }
