@@ -119,6 +119,12 @@ For v1:
 
 @todo
 #+BEGIN_SRC bash
+  goforge new interface <interface file name> --component <component name>
+  goforge new interface <interface file name> --base <base name>
+#+END_SRC
+
+@v0
+#+BEGIN_SRC bash
   goforge new internal <internal file name> --component <component name>
   goforge new internal <internal file name> --base <base name>
 #+END_SRC
