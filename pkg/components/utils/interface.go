@@ -2,6 +2,8 @@ package utils
 
 import (
 	"fmt"
+	"goforge/pkg/components/filesystem"
+	"goforge/pkg/components/result"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -22,37 +24,50 @@ const (
 	EPL2 CopyrightType = iota
 )
 
-const (
-	DoesNotExist FileType = iota
-	Directory
-	File
-)
+type SResult result.Result[string]
+
+func (r *SResult) Bind(f result.MonadicFunction[string, string]) *SResult {
+	returnedResult := result.Bind((*result.Result[string])(r), f)
+	return (*SResult)(returnedResult)
+}
 
 func IsSafeName(input string) bool {
-	pattern := "^[a-z0-9_]+$"
+	allowedChars := "[a-z][a-z0-9_]+"
+	pattern := "^" + allowedChars + "(/" + allowedChars + ")+" + "$"
+	matched, _ := regexp.MatchString(pattern, input)
+	return matched
+}
+
+func IsValidGoFileName(input string) bool {
+	allowedChars := "[a-z][a-z0-9_]+"
+	pattern := "^" + allowedChars + "(/" + allowedChars + ")+" + "(.go)?" + "$"
 	matched, _ := regexp.MatchString(pattern, input)
 	return matched
 }
 
 func ElementExists(name string, elementType ElementType) bool {
-	cleanElementPath, cleanElementPathErr := CreateCleanElementPath(name, elementType)
-	if cleanElementPathErr != nil {
-		return false
-	} else {
-		info, infoErr := os.Stat(cleanElementPath)
+	createElementPath := func(name string) *result.Result[string] {
+		return createElementPath(name, elementType)
+	}
+	doesElementExist := func(elementPath string) *result.Result[bool] {
+		_, infoErr := os.Stat(elementPath)
 		if infoErr != nil {
 			if os.IsNotExist(infoErr) {
-				return false
+				return result.Return(false)
 			} else {
-				if !info.IsDir() {
-					return false
-				} else {
-					return true
-				}
+				return result.ErrorResult[bool](infoErr)
 			}
 		} else {
-			return true
+			return result.Return(true)
 		}
+	}
+	nameResult := result.Return(name)
+	elementPathResult := result.Bind(nameResult, createElementPath)
+	elementExistsResult := result.Bind(elementPathResult, doesElementExist)
+	if elementExistsResult.Left() != nil {
+		return true
+	} else {
+		return elementExistsResult.Right()
 	}
 }
 
@@ -95,105 +110,132 @@ func CreateCleanElementPath(name string, elementType ElementType) (string, error
 	}
 }
 
+func createElementPath(name string, elementType ElementType) *result.Result[string] {
+	if !IsSafeName(name) {
+		return result.ErrorResult[string](fmt.Errorf("element: \"%s\" should start with a letter, contain only lowercase letters and numbers, and be a valid file path", name))
+	}
+	switch elementType {
+	case Component:
+		return result.Return(filepath.Clean(filepath.Join("./pkg/components", name)))
+	case Base:
+		return result.Return(filepath.Clean(filepath.Join("./pkg/bases", name)))
+	case App:
+		return result.Return(filepath.Clean(filepath.Join("./cmd", name)))
+	default:
+		return result.ErrorResult[string](fmt.Errorf("elementType must be of type Component, Base, or App"))
+	}
+}
+
 func CreateNewElement(name string, elementType ElementType, copyrightType CopyrightType) error {
-	cleanElementPath, cleanElementPathErr := CreateCleanElementPath(name, elementType)
-	if cleanElementPathErr != nil {
-		return cleanElementPathErr
-	} else {
-		switch elementType {
-		case Component:
-			return createComponentOrBase(name, Component, copyrightType)
-		case Base:
-			return createComponentOrBase(name, Base, copyrightType)
-		case App:
-			return createAppFolderAndMainFile(cleanElementPath, copyrightType)
-		default:
-			return fmt.Errorf("can only create element of type Component, Base, or App")
-		}
+	switch elementType {
+	case Component:
+		return createComponentOrBase(name, Component, copyrightType)
+	case Base:
+		return createComponentOrBase(name, Base, copyrightType)
+	case App:
+		return createAppFolderAndMainFile(name, App, copyrightType)
+	default:
+		return fmt.Errorf("can only create element of type Component, Base, or App")
 	}
 }
 
 func createComponentOrBase(name string, elementType ElementType, copyrightType CopyrightType) error {
-	cleanElementPath, cleanElementPathError := CreateCleanElementPath(name, elementType)
-	if cleanElementPathError != nil {
-		return fmt.Errorf("error")
-	} else {
-		elemErr := createComponentOrBaseFolderAndInterfaceFiles(cleanElementPath, copyrightType)
-		if elemErr != nil {
-			return elemErr
-		} else {
-			elemInternalErr := createComponentOrBaseInternalFolderAndCoreFiles(cleanElementPath, copyrightType)
-			if elemInternalErr != nil {
-				return elemInternalErr
-			} else {
-				return nil
-			}
-		}
+	createElementPath := func(name string) *result.Result[string] {
+		return createElementPath(name, elementType)
 	}
+	getDirPath := func(path string) *result.Result[string] {
+		return result.Return(filepath.Dir(path))
+	}
+	mkdir := filesystem.CreateDirectoryIfNotExists
+	mkwrite := filesystem.CreateAndWriteToFileIfNotExists
+	interfaceContents := copyrightComment(copyrightType) + fmt.Sprintf("package %s", name)
+	writeInterfaceFile := func(path string) *result.Result[string] {
+		interfacePath := filepath.Join(path, "interface.go")
+		return mkwrite(interfacePath, interfaceContents)
+	}
+	writeInterfaceTestFile := func(path string) *result.Result[string] {
+		interfaceTestPath := filepath.Join(path, "interface_test.go")
+		return mkwrite(interfaceTestPath, interfaceContents)
+	}
+	internalContents := copyrightComment(copyrightType) + "package internal"
+	mkdirInternal := func(path string) *result.Result[string] {
+		internalPath := filepath.Join(path, "internal")
+		return mkdir(internalPath)
+	}
+	writeCoreFile := func(path string) *result.Result[string] {
+		coreFilePath := filepath.Join(path, "internal", "core.go")
+		return mkwrite(coreFilePath, internalContents)
+	}
+	writeCoreTestFile := func(path string) *result.Result[string] {
+		coreFilePath := filepath.Join(path, "internal", "core_test.go")
+		return mkwrite(coreFilePath, internalContents)
+	}
+	finalResult := (*SResult)(result.Return(name)).
+		Bind(createElementPath).
+		Bind(mkdir).
+		Bind(writeInterfaceFile).
+		Bind(getDirPath).
+		Bind(writeInterfaceTestFile).
+		Bind(getDirPath).
+		Bind(mkdirInternal).
+		Bind(getDirPath).
+		Bind(writeCoreFile).
+		Bind(getDirPath).
+		Bind(getDirPath).
+		Bind(writeCoreTestFile).
+		Bind(getDirPath).
+		Bind(getDirPath)
+	return (*result.Result[string])(finalResult).Left()
 }
 
-func createComponentOrBaseFolderAndInterfaceFiles(cleanElementPath string, copyrightType CopyrightType) error {
-	if directoryErr := os.MkdirAll(cleanElementPath, 0755); directoryErr != nil {
-		return directoryErr
-	} else {
-		interfaceFilePath := filepath.Join(cleanElementPath, "interface.go")
-		interfaceFile, interfaceFileErr := os.Create(interfaceFilePath)
-		defer interfaceFile.Close()
-		interfaceTestFilePath := filepath.Join(cleanElementPath, "interface_test.go")
-		interfaceTestFile, interfaceTestFileErr := os.Create(interfaceTestFilePath)
-		defer interfaceTestFile.Close()
-		if interfaceFileErr != nil || interfaceTestFileErr != nil {
-			return fmt.Errorf("error creating interface files in %s", cleanElementPath)
-		} else {
-			copyrightComment := copyrightComment(copyrightType)
-			packageLine := fmt.Sprintf("package %s\n", filepath.Base(cleanElementPath))
-			interfaceFile.WriteString(copyrightComment + packageLine)
-			interfaceTestFile.WriteString(copyrightComment + packageLine)
-			return nil
-		}
+func createAppFolderAndMainFile(name string, elementType ElementType, copyrightType CopyrightType) error {
+	createElementPath := func(name string) *result.Result[string] {
+		return createElementPath(name, elementType)
 	}
+	getDirPath := func(path string) *result.Result[string] {
+		return result.Return(filepath.Dir(path))
+	}
+	mkdir := filesystem.CreateDirectoryIfNotExists
+	mkwrite := filesystem.CreateAndWriteToFileIfNotExists
+	contents := copyrightComment(copyrightType) + "package main"
+	writeMainFile := func(path string) *result.Result[string] {
+		mainFilePath := filepath.Join(path, "main.go")
+		return mkwrite(mainFilePath, contents)
+	}
+	finalResult := (*SResult)(result.Return(name)).
+		Bind(createElementPath).
+		Bind(mkdir).
+		Bind(writeMainFile).
+		Bind(getDirPath)
+	return (*result.Result[string])(finalResult).Left()
 }
 
-func createComponentOrBaseInternalFolderAndCoreFiles(cleanElementPath string, copyrightType CopyrightType) error {
-	cleanElementInternalPath := filepath.Join(cleanElementPath, "internal")
-	if directoryErr := os.MkdirAll(cleanElementInternalPath, 0755); directoryErr != nil {
-		return directoryErr
-	} else {
-		internalCoreFilePath := filepath.Join(cleanElementInternalPath, "core.go")
-		internalCoreTestFilePath := filepath.Join(cleanElementInternalPath, "core_test.go")
-		internalCoreFile, internalCoreFileErr := os.Create(internalCoreFilePath)
-		defer internalCoreFile.Close()
-		internalCoreTestFile, internalCoreTestFileErr := os.Create(internalCoreTestFilePath)
-		defer internalCoreTestFile.Close()
-		if internalCoreFileErr != nil ||
-			internalCoreTestFileErr != nil {
-			return fmt.Errorf("error creating core files in %s", cleanElementInternalPath)
-		} else {
-			copyrightComment := copyrightComment(copyrightType)
-			internalPackageLine := "package internal\n"
-			internalCoreFile.WriteString(copyrightComment + internalPackageLine)
-			internalCoreTestFile.WriteString(copyrightComment + internalPackageLine)
-			return nil
-		}
+func CreateInternalFile(fileName string, elementName string, elementType ElementType, copyrightType CopyrightType) error {
+	createElementPath := func(elementName string) *result.Result[string] {
+		return createElementPath(elementName, elementType)
 	}
-}
-
-func createAppFolderAndMainFile(cleanElementPath string, copyrightType CopyrightType) error {
-	if directoryErr := os.MkdirAll(cleanElementPath, 0755); directoryErr != nil {
-		return directoryErr
-	} else {
-		mainFilePath := filepath.Join(cleanElementPath, "main.go")
-		mainFile, mainFileErr := os.Create(mainFilePath)
-		defer mainFile.Close()
-		if mainFileErr != nil {
-			return fmt.Errorf("error creating main file in %s", cleanElementPath)
-		} else {
-			copyrightComment := copyrightComment(copyrightType)
-			packageLine := "package main"
-			mainFile.WriteString(copyrightComment + packageLine)
-			return nil
-		}
+	mkdir := filesystem.CreateDirectoryIfNotExists
+	mkwrite := filesystem.CreateAndWriteToFileIfNotExists
+	mkdirInternal := func(path string) *result.Result[string] {
+		internalPath := filepath.Join(path, "internal")
+		return mkdir(internalPath)
 	}
+	writeInternalFile := func(internalPath string) *result.Result[string] {
+		if !IsValidGoFileName(fileName) {
+			return result.ErrorResult[string](fmt.Errorf("element: \"%s\" should be a valid path to a go file", fileName))
+		}
+		if !strings.HasSuffix(fileName, ".go") {
+			fileName = fileName + ".go"
+		}
+		internalFilePath := filepath.Join(internalPath, fileName)
+		internalContents := copyrightComment(copyrightType) + "package internal"
+		return mkwrite(internalFilePath, internalContents)
+	}
+	finalResult := (*SResult)(result.Return(elementName)).
+		Bind(createElementPath).
+		Bind(mkdirInternal).
+		Bind(writeInternalFile)
+	return (*result.Result[string])(finalResult).Left()
 }
 
 func copyrightComment(copyrightType CopyrightType) string {
@@ -206,37 +248,5 @@ func RemoveElement(name string, elementType ElementType) error {
 		return cleanElementPathErr
 	} else {
 		return os.RemoveAll(cleanElementPath)
-	}
-}
-
-func CreateInternalFile(fileName string, elementName string, elementType ElementType, copyrightType CopyrightType) error {
-	if !IsSafeName(fileName) {
-		return fmt.Errorf("name %s contains characters other than lowercase letters, numbers, or underscores", fileName)
-	} else {
-		cleanElementPath, cleanElementPathErr := CreateCleanElementPath(elementName, elementType)
-		if cleanElementPathErr != nil {
-			return cleanElementPathErr
-		} else {
-			if !strings.HasSuffix(fileName, ".go") {
-				fileName = fileName + ".go"
-			}
-			internalFolderPath := filepath.Join(cleanElementPath, "internal")
-			mkInternalDirErr := os.MkdirAll(internalFolderPath, 0755)
-			if mkInternalDirErr != nil {
-				return mkInternalDirErr
-			} else {
-				newInternalFilePath := filepath.Join(internalFolderPath, fileName)
-				newInternalFile, newInternalFileErr := os.Create(newInternalFilePath)
-				defer newInternalFile.Close()
-				if newInternalFileErr != nil {
-					return fmt.Errorf("error creating %s file in %s", fileName, internalFolderPath)
-				} else {
-					copyrightComment := copyrightComment(copyrightType)
-					packageLine := "package internal"
-					newInternalFile.WriteString(copyrightComment + packageLine)
-					return nil
-				}
-			}
-		}
 	}
 }
